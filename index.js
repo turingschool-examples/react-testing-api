@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.locals.contacts = [
   {
@@ -25,12 +25,12 @@ app.get('/api/v1/contacts', (req, res) => {
 
 app.post('/api/v1/contacts', (req, res) => {
   const requiredProperties = [ "name", "number" ];
-  //console.log(req)
+  console.log(req)
   const receivedProperties = Object.keys(req.body);
   console.log(receivedProperties);
   for (let property of requiredProperties) {
     if (! receivedProperties.includes(property)) {
-      return res.status(422).json({error: `Cannot POST: missing property ${property} in response.`});
+      return res.status(422).json({error: `Cannot POST: missing property ${property} in request.`});
     }
   }
   const newContact = {
