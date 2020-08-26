@@ -19,11 +19,11 @@ app.get('/hi', (req, res) => {
   res.status(200).send('Hail and well met!');
 });
 
-app.get('/contacts', (req, res) => {
+app.get('/api/v1/contacts', (req, res) => {
   res.status(200).json({contacts: app.locals.contacts});
 })
 
-app.post('/contacts', (req, res) => {
+app.post('/api/v1/contacts', (req, res) => {
   const requiredProperties = [ "name", "number" ];
   //console.log(req)
   const receivedProperties = Object.keys(req.body);
@@ -41,6 +41,18 @@ app.post('/contacts', (req, res) => {
 
   app.locals.contacts.push(newContact);
   return res.status(201).json({newContact: newContact});
+});
+
+app.patch('/api/v1/contacts/:id', (req, res) => {
+  const { id } = req.params;
+
+  const foundIndex = app.locals.contacts.findIndex(contact => contact.id === +id);
+  if (foundIndex === -1) {
+    return res.status(422).json({message: `Cannot find contact with id of ${id}`});
+  }
+
+  app.locals.contacts[foundIndex].bestFriend = !app.locals.contacts[foundIndex].bestFriend;
+  return res.status(200).json({updatedContact: app.locals.contacts[foundIndex]});
 });
 
 
