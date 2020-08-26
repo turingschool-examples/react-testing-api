@@ -21,8 +21,8 @@ This repo contains code for the server intended for use with the React Contact T
 ## TODO:
 - [x] Add PATCH route 
 - [x] Add docs for PATCH route 
-- [ ] Add DELETE route
-- [ ] Add docs for DELETE route
+- [x] Add DELETE route
+- [x] Add docs for DELETE route
 - [ ] Hookup FE to BE 
   - Make it so that the FE makes a get request on load, post on add
   - Make it so that the FE make a GET on load, DELETE on delete and another GET afterwards

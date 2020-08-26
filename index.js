@@ -30,7 +30,7 @@ app.post('/api/v1/contacts', (req, res) => {
   console.log(receivedProperties);
   for (let property of requiredProperties) {
     if (! receivedProperties.includes(property)) {
-      return res.status(422).json({message: `Cannot POST: missing property ${property} in response.`});
+      return res.status(422).json({error: `Cannot POST: missing property ${property} in response.`});
     }
   }
   const newContact = {
@@ -48,11 +48,25 @@ app.patch('/api/v1/contacts/:id', (req, res) => {
 
   const foundIndex = app.locals.contacts.findIndex(contact => contact.id === +id);
   if (foundIndex === -1) {
-    return res.status(422).json({message: `Cannot find contact with id of ${id}`});
+    return res.status(422).json({error: `Cannot find contact with id of ${id}`});
   }
 
   app.locals.contacts[foundIndex].bestFriend = !app.locals.contacts[foundIndex].bestFriend;
   return res.status(200).json({updatedContact: app.locals.contacts[foundIndex]});
+});
+
+app.delete(`/api/v1/contacts/:id`, (req, res) => {
+  const { id } = req.params;
+  console.log(id)
+  const updatedContacts = app.locals.contacts.filter(contact => contact.id !== +id);
+  console.log(updatedContacts);
+  if (updatedContacts.length === app.locals.contacts.length ) {
+    return res.status(422).json({error: `Cannot DELETE: no contact with id ${id} found`});
+  }
+  
+  app.locals.contacts = updatedContacts;
+  console.log(app.locals.contact);
+  return res.sendStatus(204)
 });
 
 
